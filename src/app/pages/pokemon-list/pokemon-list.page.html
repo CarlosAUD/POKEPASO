@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>QUE POKEPASO</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-input
+      placeholder="Ingrese el nombre del Pokémon"
+      [(ngModel)]="pokemonName"
+    ></ion-input>
+    <ion-button (click)="searchPokemon()">Buscar</ion-button>
+  </ion-item>
+
+  <ion-card *ngIf="pokemonData">
+    <!-- Nombre del Pokémon -->
+    <ion-card-header>
+      <ion-card-title>{{ pokemonData.name | titlecase }}</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <!-- Imagen del Pokémon -->
+      <ion-img [src]="pokemonData.sprites.front_default" style="width: 100%; height: auto; margin-bottom: 10px;"></ion-img>
+
+      <!-- Barra de altura -->
+      <p><strong>Altura:</strong> {{ pokemonData.height }} decímetros</p>
+      <ion-progress-bar [value]="pokemonData.height / 100" color="primary" style="margin-bottom: 10px;"></ion-progress-bar>
+
+      <!-- Barra de peso -->
+      <p><strong>Peso:</strong> {{ pokemonData.weight }} hectogramos</p>
+      <ion-progress-bar [value]="pokemonData.weight / 1000" color="secondary" style="margin-bottom: 10px;"></ion-progress-bar>
+
+      <!-- Tipos de Pokémon con barras de colores -->
+      <p><strong>Tipos:</strong></p>
+      <div *ngFor="let type of pokemonData.types" style="margin-bottom: 5px;">
+        <ion-progress-bar
+          [value]="1"
+          [color]="getTypeColor(type.type.name)"
+          style="height: 10px; border-radius: 5px;"
+        ></ion-progress-bar>
+        <span>{{ type.type.name | titlecase }}</span>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-text color="danger" *ngIf="error">{{ error }}</ion-text>
+</ion-content>
